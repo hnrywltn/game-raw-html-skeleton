@@ -11,7 +11,6 @@ addEventListener("DOMContentLoaded", (event) => {
 
 
     const context = canvas.getContext('2d');
-    context.fillStyle = 'red';
 
     const gravity = 0.5;
 
@@ -30,6 +29,7 @@ addEventListener("DOMContentLoaded", (event) => {
         }
 
         draw(){
+            context.fillStyle = 'red';
             context.fillRect(
                 this.position.x,
                 this.position.y,
@@ -51,7 +51,27 @@ addEventListener("DOMContentLoaded", (event) => {
 
     }
 
+    class Platform {
+        constructor(){
+            this.position = {
+                x: 200,
+                y: 100
+            }
+            this.width = 200
+            this.height = 20
+        }
+        draw(){
+            context.fillStyle = 'blue';
+            context.fillRect(
+                this.position.x,
+                this.position.y,
+                this.width,
+                this.height);
+        }
+    }
+
     const player1 = new Player();
+    const platform1 = new Platform();
     const keys = {
         right: {
             pressed: false
@@ -66,6 +86,7 @@ addEventListener("DOMContentLoaded", (event) => {
         requestAnimationFrame(animate);
         context.clearRect(0, 0, canvas.width, canvas.height);
         player1.update();
+        platform1.draw();
 
         if(keys.right.pressed){
             player1.velocity.x = 5;
@@ -74,6 +95,23 @@ addEventListener("DOMContentLoaded", (event) => {
         }else{
             player1.velocity.x = 0;
         }
+
+
+        //stop from falling off a platform
+        if(player1.position.y + player1.height <= platform1.position.y
+            &&
+            player1.position.y + player1.height + player1.velocity.y >= platform1.position.y
+            &&
+            player1.position.x + player1.width >= platform1.position.x
+            &&
+            player1.position.x <= platform1.position.x + platform1.width
+
+            ){
+            player1.velocity.y = 0
+        }
+
+
+
     }
 
     animate();
@@ -105,7 +143,6 @@ addEventListener("DOMContentLoaded", (event) => {
     });
 
     window.addEventListener('keyup', (e)=>{
-        console.log(e.key);
         const pressedKey = e.key;
         if(pressedKey == 'a'){
             //left

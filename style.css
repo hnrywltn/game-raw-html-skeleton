@@ -2,3 +2,7 @@ body{
     margin: 0;
     overflow: hidden;
 }
+
+canvas{
+    background-color: rgba(0, 255, 255, 0.355);
+}
