@@ -1,8 +1,18 @@
 body{
     margin: 0;
     overflow: hidden;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 canvas{
-    background-color: rgba(0, 255, 255, 0.355);
+    background-image: url("https://res.cloudinary.com/dakpeqeyq/image/upload/v1692160866/Textures%20-%20LP/3d-dark-gray-paper-craft-heptagonal-patterned-bac-2022-12-15-23-41-08-utc_b46dox.jpg");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 10px solid white;
+    border-radius: 15px;
 }

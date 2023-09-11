@@ -2,12 +2,17 @@
 
 
 
-
-
 addEventListener("DOMContentLoaded", (event) => {
+    const cloud = new Image();
+    const henry = new Image();
+    const saran = new Image();
+    saran.src = "./saran.png"
+    henry.src = "./henry.png";
+    cloud.src = "./real-cloud-picture-8.png";
     const canvas = document.querySelector('canvas');
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
+    console.log(canvas)
+    canvas.width = 870;
+    canvas.height = 576;
 
 
     const context = canvas.getContext('2d');
@@ -24,13 +29,14 @@ addEventListener("DOMContentLoaded", (event) => {
                 x: 0,
                 y: 1
             }
-            this.width = 50
-            this.height = 75
+            this.width = 75
+            this.height = 100
         }
 
         draw(){
             context.fillStyle = 'red';
-            context.fillRect(
+            context.drawImage(
+                henry,
                 this.position.x,
                 this.position.y,
                 this.width,
@@ -55,14 +61,16 @@ addEventListener("DOMContentLoaded", (event) => {
         constructor(x, y, width, height){
             this.position = {
                 x,
-                y
+                y,
             }
             this.width = width
             this.height = height
+            this.image = cloud
         }
         draw(){
             context.fillStyle = 'green';
-            context.fillRect(
+            context.drawImage(
+                cloud,
                 this.position.x,
                 this.position.y,
                 this.width,
@@ -80,10 +88,13 @@ addEventListener("DOMContentLoaded", (event) => {
         const pairs = [];
 
         for (let i = 0; i < numberOfPairs; i++) {
-          const randomNum1 = Math.floor(Math.random() * (num1 + 1));
-          const randomNum2 = Math.floor(Math.random() * (num2 + 1));
-          const width = Math.floor(Math.random() * (maxWidth + 1));
-          const height = Math.floor(Math.random() * (maxHeight + 1));
+          let randomNum1 = Math.floor(Math.random() * (num1 + 1));
+          let randomNum2 = Math.floor(Math.random() * (num2 + 1));
+          let width = Math.floor(Math.random() * (maxWidth + 1));
+          let height = Math.floor(Math.random() * (maxHeight + 1));
+          if(randomNum2 < 100){
+            randomNum2 += 200;
+          }
           pairs.push([randomNum1, randomNum2, width, height]);
         }
 
@@ -95,6 +106,7 @@ addEventListener("DOMContentLoaded", (event) => {
     const platformsRandomPositions = generateRandomPairs(100000, 650, 200, 50, 750);
 
     const platformContainer = platformsRandomPositions.map(coordinates => new Platform(...coordinates));
+    const start = new Platform(0, 550, 650, 20);
     // const platform = new Platform(400, 600);
 
 
@@ -108,11 +120,17 @@ addEventListener("DOMContentLoaded", (event) => {
     }
     player1.draw();
 
+
+
+
+
+
+
     function animate(){
         requestAnimationFrame(animate);
         context.clearRect(0, 0, canvas.width, canvas.height);
         player1.update();
-        platformContainer.forEach(platform => {
+        [start, ...platformContainer].forEach(platform => {
 
             platform.draw();
 
@@ -130,6 +148,7 @@ addEventListener("DOMContentLoaded", (event) => {
                 }
             }
 
+            if(player1.position.y < 0) player1.position.y = 0;
 
         //stop from falling off a platform
         if(player1.position.y + player1.height <= platform.position.y
@@ -143,6 +162,9 @@ addEventListener("DOMContentLoaded", (event) => {
             ){
             player1.velocity.y = 0
         }
+
+        // set win condition
+        // if(scrollOffset > )
     });
 
 
@@ -186,9 +208,6 @@ addEventListener("DOMContentLoaded", (event) => {
             keys.right.pressed = false;
         }else if(pressedKey == 's'){
             //down
-        }else if(pressedKey == 'w'){
-            //up
-            player1.velocity.y -= 10;
         }
 
     });
